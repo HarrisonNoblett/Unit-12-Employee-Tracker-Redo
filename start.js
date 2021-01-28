@@ -97,5 +97,41 @@ function viewbyManager() {
 
 //Function to add a new Employee
 function addEmployee() {
-    
+    inquirer
+    .prompt([{
+
+            type: "input",
+            name: "first_name",
+            message: "Please provide the employee's first name",
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "Please provide the employee's last name",
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "Please enter a role ID",
+        },
+        {
+            type: "input",
+            name: "manager_id",
+            message: "Please enter a manager ID",
+        }
+    ])
+    .then(function(answer) {
+        console.log(answer)
+        connection.query("INSERT INTO employee SET ?", {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: answer.role_id,
+            manager_id: answer.manager_id,
+        }, function(err) {
+            if (err) throw (err)
+            console.log("Employee succesfully added!")
+            console.log(err)
+            runEmployeePrompt();
+        })
+    })
 }

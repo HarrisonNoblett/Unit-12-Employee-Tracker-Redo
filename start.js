@@ -2,22 +2,23 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var util = require("util");
-
 require("console.table")
 
 //Connecting to the MySQL data-base
 var connection = mysql.createConnection({
   host: "localhost",
 
-  // Your port; if not 3306
+  // My local port
   port: 3306,
 
-  // Your username
+  // My username
   user: "root",
 
-  // Your password
+  // My password
   password: "Panda736!",
-  database: "employee_db"
+
+  //My DataBase
+  database: "Employee_db"
 });
 
 // If connected shoot the initial prompt questions
@@ -32,31 +33,25 @@ function initialPrompts() {
         {
             type: "rawlist",
             message: "Please choose what you like to do",
-            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager"],
+            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Finished"],
             name: "Choices"
         }
-    ]).then(function(response) {
-        switch (response.choices) {
-            case "View All Employees" :
+    ]).then(function(answer) {
+        switch (answer.choices) {
+            case "View All Employees":
                 viewEmployee();
                 break;
-            case "View All Employes by Department" :
+ 
+            case "View All Employes by Department":
                 viewbyDepartment();
                 break;
-            case "View All Employees by Manager" :
+
+            case "View All Employees by Manager":
                 viewbyManager();
                 break;
-            case "Add Employee" :
+
+            case "Add Employee":
                 addEmployee();
-                break;
-            case "Remove Employee" :
-                removeEmployee();
-                break;
-            case "Update Employee Role" :
-                updateRole();
-                break;
-            case "Update Employee Manager" :
-                updateManager();
                 break;
             default:
                 process.exit();
@@ -80,8 +75,8 @@ function viewbyDepartment() {
             type: "rawlist",
             message: "Select the department that you would like to view",
             choices: ["HR", "IT", "Sales", "Engineering"]
-        }]).then(function(response) {
-            console.log(response)
+        }]).then(function(answer) {
+            console.log(answer)
         })
 }
 
@@ -92,7 +87,10 @@ function viewbyManager() {
             type: "rawlist",
             message: "Select the manager that you would like to view",
             choices: ["Coding", "Sales", "CEO"]
-        }])
+        }]).then(function(answer) {
+            console.log(answer)
+
+        })
 }
 
 //Function to add a new Employee
@@ -129,7 +127,7 @@ function addEmployee() {
             manager_id: answer.manager_id,
         }, function(err) {
             if (err) throw (err)
-            console.log("Employee succesfully added!")
+            console.log("Employee added!")
             console.log(err)
             runEmployeePrompt();
         })
